@@ -28,17 +28,35 @@ The pipeline automatically creates new business-oriented columns:
 
 Computed KPIs include:
 
+#### Revenue KPIs
+
 - Total revenue
 - Revenue by city
 - Revenue by hour
 - Revenue by month
 - Revenue by product
+- Best revenue hour
+- Best revenue month
+- Best revenue city
+- Best revenue product
+- Average revenue per order by city
+- Top 5 cities by revenue
+
+#### Product KPIs
+
 - Quantity sold by hour
 - Top-selling products
-- Best sales hour
-- Best sales month
-- Best sales city
-- Best-selling product
+- Best-selling product by quantity
+- Top 5 most sold products
+
+#### Order KPIs
+
+- Orders by city
+- Orders by hour
+- Average order value
+- City with the most orders
+- Hour with the most orders
+- Number of orders per product
 
 ### Visualization
 
@@ -65,7 +83,13 @@ sales-data-pipeline/
 │   ├── revenue_by_month.csv
 │   ├── revenue_by_product.csv
 │   ├── product_sold_by_hour.csv
-│   └── top_product.csv
+│   ├── top_product.csv
+│   ├── orders_by_city.csv
+│   ├── orders_by_hour.csv
+│   ├── average_revenue_by_order_by_city.csv
+│   ├── orders_per_product.csv
+│   ├── top_5_products.csv
+│   └── top_5_cities.csv
 │
 ├── plots/
 │   ├── revenue_by_city.png
