@@ -67,6 +67,33 @@ Automatic graph generation with matplotlib:
 - Revenue evolution
 - Product performance analysis
 
+## Generated Outputs
+
+The pipeline automatically generates:
+
+- CSV KPI reports inside `/output`
+- Graphs and visualizations inside `/plots`
+
+## Example Outputs
+
+### Revenue by City
+
+![Revenue by City](plots/revenue_by_city.png)
+
+### Revenue by Hour
+
+![Revenue by Hour](plots/revenue_by_hour.png)
+
+### Top Products
+
+![Top Products](plots/top_product.png)
+
+## Sample Insights
+
+- San Francisco generated the highest revenue
+- Evening hours generated the most sales
+- AAA Batteries were the most sold product
+
 ---
 
 ## Project Structure
