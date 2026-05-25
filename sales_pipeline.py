@@ -1,4 +1,5 @@
 import os
+from re import A
 import pandas as pd
 import matplotlib.pyplot as plt
             
@@ -47,22 +48,48 @@ def compute_kpis(df:pd.DataFrame) -> dict :
     revenue_by_product >> DataFrame which contains the gross revenue made by product
     product_sold_by_hour >> DataFrame which contains the quantity of product sold per hour
     top_product >> DataFrame which contains the total quantity of product sold by product
-    best_hour >> float which contains the hour where the most sales occured
-    best_month >> float which contains the month where the most sales occured
-    best_city >> str which contains the name of the city where the most sales occured
-    best_product >> str which contains the name of the most sold product
+    best_revenue_hour >> int which contains the hour during which the most sales occurred
+    best_revenue_month >> int which contains the month during which the most sales occurred
+    best_revenue_city >> str which contains the city which generated the highest revenue
+    best_product_by_quantity >> str which contains the product with the highest quantity sold
+    orders_by_city >> DataFrame which contains the number of orders made in a city
+    orders_by_hour >> DataFrame which contains the number of orders made every hour
+    average_order_value >> float which contains the average revenue made per order
+    best_revenue_product >> str which contains the name of the product that made the best revenue
+    city_with_most_orders >> str which contains the name of the city with the most orders
+    hour_with_most_orders >> int which contains the hour with the most orders
+    average_revenue_by_order_by_city >> DataFrame which contains the average revenue per order by city
+    orders_per_product >> DataFrame which contains the number of orders per product
+    top_5_products >> DataFrame which contains the 5 most sold products
+    top_5_cities >> DataFrame which contains the 5 cities with the highest revenue
     """
+    #Revenue KPIs
     revenue_total = df["Revenue"].sum()
     revenue_by_city = df.groupby("City")["Revenue"].sum().sort_values(ascending=False).to_frame()
     revenue_by_hour = df.groupby("Hour")["Revenue"].sum().to_frame()
     revenue_by_month = df.groupby("Month")["Revenue"].sum().to_frame()
     revenue_by_product = df.groupby("Product")["Revenue"].sum().sort_values(ascending=False).to_frame()
-    product_sold_by_hour = df.groupby("Hour")["Quantity Ordered"].sum().to_frame()
+    best_revenue_hour = revenue_by_hour["Revenue"].idxmax()
+    best_revenue_month = revenue_by_month["Revenue"].idxmax()
+    best_revenue_city = revenue_by_city["Revenue"].index[0]
+    best_revenue_product = revenue_by_product.index[0]
+    top_5_cities = revenue_by_city.head(5)
+    average_revenue_by_order_by_city = df.groupby("City")["Revenue"].mean().sort_values(ascending=False).to_frame()
+    
+    #Product KPIs
     top_product = df.groupby("Product")["Quantity Ordered"].sum().sort_values(ascending=False).to_frame()
-    best_hour = revenue_by_hour["Revenue"].idxmax()
-    best_month = revenue_by_month["Revenue"].idxmax()
-    best_city = revenue_by_city["Revenue"].idxmax()
-    best_product = top_product.index[0]
+    product_sold_by_hour = df.groupby("Hour")["Quantity Ordered"].sum().to_frame()
+    best_product_by_quantity = top_product.index[0]
+    top_5_products = top_product.head(5)
+    
+    #Order KPIs
+    orders_by_city = df.groupby("City")["Order ID"].nunique().sort_values(ascending=False).to_frame()
+    orders_by_hour = df.groupby("Hour")["Order ID"].nunique().to_frame()
+    average_order_value = df.groupby("Order ID")["Revenue"].sum().mean()
+    city_with_most_orders = orders_by_city.index[0]
+    hour_with_most_orders = orders_by_hour.idxmax()
+    orders_per_product = df.groupby("Product")["Order ID"].nunique().sort_values(ascending=False).to_frame()
+   
     return {
     "revenue_total" : revenue_total,
     "revenue_by_city" : revenue_by_city,
@@ -71,10 +98,20 @@ def compute_kpis(df:pd.DataFrame) -> dict :
     "revenue_by_product" : revenue_by_product,
     "product_sold_by_hour" : product_sold_by_hour,
     "top_product" : top_product,
-    "best_hour" : best_hour,
-    "best_month" : best_month,
-    "best_city" : best_city,
-    "best_product" : best_product
+    "best_revenue_hour" : best_revenue_hour,
+    "best_revenue_month" : best_revenue_month,
+    "best_revenue_city" : best_revenue_city,
+    "best_product_by_quantity" : best_product_by_quantity,
+    "orders_by_city" : orders_by_city,
+    "orders_by_hour" : orders_by_hour,
+    "average_order_value" : average_order_value,
+    "best_revenue_product" : best_revenue_product,
+    "city_with_most_orders" : city_with_most_orders,
+    "hour_with_most_orders" : hour_with_most_orders,
+    "average_revenue_by_order_by_city" : average_revenue_by_order_by_city,
+    "orders_per_product" : orders_per_product,
+    "top_5_products" : top_5_products,
+    "top_5_cities" : top_5_cities
     }
 
     
@@ -101,11 +138,24 @@ def save_plot(df:pd.DataFrame, kind:str, title:str, ylabel:str, filename:str) ->
 def create_plots(kpis:dict) -> None:
     """Exports kpis as graphs in PNG"""
     os.makedirs("plots", exist_ok=True)
-    save_plot(kpis["revenue_by_city"],ylabel="Revenue",title="Revenue by City",kind="bar",filename="revenue_by_city")
-    save_plot(kpis["revenue_by_hour"], ylabel="Revenue",title="Revenue by hour",kind="line",filename="revenue_by_hour")    
-    save_plot(kpis["revenue_by_product"], ylabel="Revenue",title="Revenue by product",kind="bar",filename="revenue_by_product")
-    save_plot(kpis["product_sold_by_hour"], ylabel="Product",title="Product sold by hour",kind="line",filename="product_sold_by_hour")
-    save_plot(kpis["top_product"],ylabel="Quantity",title="Quantity of product sold",kind="bar",filename="top_product")
+
+    # Revenue plots
+    save_plot(kpis["revenue_by_city"], ylabel="Revenue", title="Revenue by City", kind="bar", filename="revenue_by_city")
+    save_plot(kpis["revenue_by_hour"], ylabel="Revenue", title="Revenue by Hour", kind="bar", filename="revenue_by_hour")
+    save_plot(kpis["revenue_by_month"], ylabel="Revenue", title="Revenue by Month", kind="bar", filename="revenue_by_month")
+    save_plot(kpis["revenue_by_product"], ylabel="Revenue", title="Revenue by Product", kind="bar", filename="revenue_by_product")
+    save_plot(kpis["average_revenue_by_order_by_city"], ylabel="Average Revenue per orders", title="Average Revenue by Orders per City", kind="bar", filename="average_revenue_by_order_by_city")
+    save_plot(kpis["top_5_cities"], ylabel="Revenue", title="Top 5 Cities by Revenue", kind="bar", filename="top_5_cities")
+
+    # Product plots
+    save_plot(kpis["product_sold_by_hour"], ylabel="Quantity", title="Products Sold by Hour", kind="line", filename="product_sold_by_hour")
+    save_plot(kpis["top_product"], ylabel="Quantity", title="Quantity of Products Sold", kind="bar", filename="top_product")
+    save_plot(kpis["top_5_products"], ylabel="Quantity", title="Top 5 Products by Quantity Sold", kind="bar", filename="top_5_products")
+    save_plot(kpis["orders_per_product"], ylabel="Orders", title="Orders per Product", kind="bar", filename="orders_per_product")
+
+    # Order plots
+    save_plot(kpis["orders_by_city"], ylabel="Orders", title="Orders by City", kind="bar", filename="orders_by_city")
+    save_plot(kpis["orders_by_hour"], ylabel="Orders", title="Orders by Hour", kind="bar", filename="orders_by_hour")
 
 
 def main():
