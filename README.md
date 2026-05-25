@@ -1,340 +1,157 @@
-# \# sales-data-pipeline
+# Sales Data Pipeline
+
+Python data analysis pipeline built with **pandas** and **matplotlib** using the April 2019 sales dataset.
+
+This project simulates a real-world business data workflow commonly found in junior data analyst and business intelligence positions.
+
+---
+
+## Features
+
+### Data Cleaning
+
+- Removes empty rows
+- Removes duplicated header rows
+- Converts columns to proper data types
+- Handles invalid values with `errors="coerce"`
+
+### Feature Engineering
+
+The pipeline automatically creates new business-oriented columns:
 
-# 
+- `Revenue`
+- `Hour`
+- `Month`
+- `City`
 
-# A complete data analysis pipeline built with Python and pandas using the April 2019 sales dataset.
+### KPI Analysis
 
-# 
+Computed KPIs include:
 
-# This project demonstrates a professional data workflow including:
+#### Revenue KPIs
 
-# 
+- Total revenue
+- Revenue by city
+- Revenue by hour
+- Revenue by month
+- Revenue by product
+- Best revenue hour
+- Best revenue month
+- Best revenue city
+- Best revenue product
+- Average revenue per order by city
+- Top 5 cities by revenue
 
-# \* data cleaning,
+#### Product KPIs
 
-# \* type conversion,
+- Quantity sold by hour
+- Top-selling products
+- Best-selling product by quantity
+- Top 5 most sold products
 
-# \* feature engineering,
+#### Order KPIs
 
-# \* KPI computation,
+- Orders by city
+- Orders by hour
+- Average order value
+- City with the most orders
+- Hour with the most orders
+- Number of orders per product
 
-# \* CSV export,
+### Visualization
 
-# \* data visualization with matplotlib.
+Automatic graph generation with matplotlib:
 
-# 
+- Bar charts
+- Line charts
+- Revenue evolution
+- Product performance analysis
 
-# The goal of this project is to simulate a real-world business data analysis workflow similar to what can be found in data-oriented internships and junior data analyst positions.
+---
 
-# 
+## Project Structure
 
-# \---
+```text
+sales-data-pipeline/
+│
+├── data/
+│   └── Sales_April_2019.csv
+│
+├── output/
+│   ├── revenue_by_city.csv
+│   ├── revenue_by_hour.csv
+│   ├── revenue_by_month.csv
+│   ├── revenue_by_product.csv
+│   ├── product_sold_by_hour.csv
+│   ├── top_product.csv
+│   ├── orders_by_city.csv
+│   ├── orders_by_hour.csv
+│   ├── average_revenue_by_order_by_city.csv
+│   ├── orders_per_product.csv
+│   ├── top_5_products.csv
+│   └── top_5_cities.csv
+│
+├── plots/
+│   ├── revenue_by_city.png
+│   ├── revenue_by_hour.png
+│   ├── revenue_by_product.png
+│   ├── product_sold_by_hour.png
+│   └── top_product.png
+│
+├── sales_pipeline.py
+├── requirements.txt
+└── README.md
+````
 
-# 
+---
 
-# \# Project Structure
+## Installation
 
-# 
+Install dependencies:
 
-# sales-data-pipeline/
+```bash
+pip install -r requirements.txt
+```
 
-# │
+---
 
-# ├── data/
+## Usage
 
-# │   └── Sales\_April\_2019.csv
+Run the pipeline:
 
-# │
+```bash
+python sales_pipeline.py
+```
 
-# ├── output/
+---
 
-# │   ├── revenue\_by\_city.csv
+## Technologies Used
 
-# │   ├── revenue\_by\_hour.csv
+* Python
+* pandas
+* matplotlib
 
-# │   ├── revenue\_by\_month.csv
+---
 
-# │   ├── revenue\_by\_product.csv
+## Example Workflow
 
-# │   ├── product\_sold\_by\_hour.csv
+1. Load raw CSV dataset
+2. Clean invalid data
+3. Convert data types
+4. Enrich the dataset
+5. Compute KPIs
+6. Export CSV reports
+7. Generate graphs automatically
 
-# │   ├── top\_product.csv
+---
 
-# │
+## Learning Objectives
 
-# ├── plots/
+This project was built to practice:
 
-# │   ├── revenue\_by\_city.png
-
-# │   ├── revenue\_by\_hour.png
-
-# │   ├── revenue\_by\_product.png
-
-# │   ├── product\_sold\_by\_hour.png
-
-# │   ├── top\_product.png
-
-# │
-
-# ├── sales\_pipeline.py
-
-# ├── requirements.txt
-
-# └── README.md
-
-# 
-
-# \---
-
-# 
-
-# \# Features
-
-# 
-
-# \## Data Cleaning
-
-# 
-
-# \* Removes empty rows
-
-# \* Removes duplicated header rows
-
-# \* Converts columns to appropriate data types
-
-# \* Handles invalid values with `errors="coerce"`
-
-# 
-
-# \## Feature Engineering
-
-# 
-
-# The pipeline creates additional business-oriented columns:
-
-# 
-
-# \* Revenue
-
-# \* Hour
-
-# \* Month
-
-# \* City
-
-# 
-
-# \## KPI Analysis
-
-# 
-
-# The following KPIs are computed:
-
-# 
-
-# \* Total revenue
-
-# \* Revenue by city
-
-# \* Revenue by hour
-
-# \* Revenue by month
-
-# \* Revenue by product
-
-# \* Quantity sold by hour
-
-# \* Top-selling products
-
-# \* Best sales hour
-
-# \* Best sales month
-
-# \* Best sales city
-
-# \* Best-selling product
-
-# 
-
-# \## Data Export
-
-# 
-
-# The pipeline automatically exports:
-
-# 
-
-# \* cleaned datasets,
-
-# \* KPI tables,
-
-# \* generated visualizations.
-
-# 
-
-# \## Visualization
-
-# 
-
-# The project generates professional graphs using matplotlib:
-
-# 
-
-# \* bar charts,
-
-# \* line charts,
-
-# \* sales evolution graphs,
-
-# \* product performance analysis.
-
-# 
-
-# \---
-
-# 
-
-# \# Installation
-
-# 
-
-# Install the required dependencies:
-
-# 
-
-# pip install -r requirements.txt
-
-# 
-
-# \---
-
-# 
-
-# \# Requirements
-
-# 
-
-# requirements.txt content:
-
-# 
-
-# pandas
-
-# matplotlib
-
-# 
-
-# \---
-
-# 
-
-# \# Usage
-
-# 
-
-# Run the pipeline with:
-
-# 
-
-# python sales\_pipeline.py
-
-# 
-
-# \---
-
-# 
-
-# \# Dataset
-
-# 
-
-# Dataset used:
-
-# 
-
-# April Sales 2019 Dataset from Kaggle.
-
-# 
-
-# Columns:
-
-# 
-
-# \* Order ID
-
-# \* Product
-
-# \* Quantity Ordered
-
-# \* Price Each
-
-# \* Order Date
-
-# \* Purchase Address
-
-# 
-
-# \---
-
-# 
-
-# \# Technologies Used
-
-# 
-
-# \* Python
-
-# \* pandas
-
-# \* matplotlib
-
-# \* CSV data processing
-
-# 
-
-# \---
-
-# 
-
-# \# Example Workflow
-
-# 
-
-# 1\. Load raw CSV data
-
-# 2\. Clean invalid rows
-
-# 3\. Convert data types
-
-# 4\. Enrich dataset with business features
-
-# 5\. Compute KPIs
-
-# 6\. Export CSV reports
-
-# 7\. Generate graphs automatically
-
-# 
-
-# \---
-
-# 
-
-# \# Learning Objectives
-
-# 
-
-# This project was built to practice:
-
-# 
-
-# \* professional pandas workflows,
-
-# \* business-oriented data analysis,
-
-# \* automation pipelines,
-
-# \* KPI generation,
-
-# \* data visualization.
+* Professional pandas workflows
+* Business-oriented data analysis
+* KPI generation
+* Automation pipelines
+* Data visualization
 
